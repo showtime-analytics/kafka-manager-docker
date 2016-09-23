@@ -18,7 +18,7 @@ RUN wget -nv --no-cookies --no-check-certificate \
 
 ENV JAVA_HOME=/usr/java/jdk1.8.0_${JAVA_UPDATE} \
     ZK_HOSTS=localhost:2181 \
-    KM_VERSION=1.3.1.6 \
+    KM_VERSION=1.3.1.8 \
     KM_REVISION=6cf43e383377a6b37df4faa04d9aff515a265b30 \
     KM_CONFIGFILE="conf/application.conf"
 
@@ -26,9 +26,11 @@ ADD start-kafka-manager.sh /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
 
 RUN mkdir -p /tmp && \
     cd /tmp && \
-    git clone https://github.com/yahoo/kafka-manager && \
+    git clone https://github.com/yahoo/kafka-manager.git && \
     cd /tmp/kafka-manager && \
-    git checkout ${KM_REVISION} && \
+    git fetch origin pull/282/head:0.10.0 && \
+    git checkout 0.10.0 && \
+#    git checkout ${KM_REVISION} && \
     echo 'scalacOptions ++= Seq("-Xmax-classfile-name", "200")' >> build.sbt && \
     ./sbt clean dist && \
     unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \

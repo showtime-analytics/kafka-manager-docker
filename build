@@ -1,0 +1,1 @@
+docker build -t showtimeanalytics/kafka-manager:$(cat version) .
